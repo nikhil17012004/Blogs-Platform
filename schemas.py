@@ -1,0 +1,49 @@
+from datetime import datetime
+
+from pydantic import BaseModel, ConfigDict, Field, EmailStr
+
+
+class UserBase(BaseModel):
+    username: str = Field(min_length=1, max_length=50)
+    email: EmailStr = Field(max_length=120)
+
+class UserCreate(UserBase):
+    pass
+
+class UserResponse(UserBase):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    image_file : str | None
+    image_path : str
+
+class UserUpdate(BaseModel):
+    username: str | None = Field(default=None, min_length=1, max_length=50)
+    email: EmailStr | None = Field(default=None, max_length=120)
+    image_file: str | None = Field(default=None, min_length=1, max_length=200)
+
+
+
+class PostBase(BaseModel):
+    title: str = Field(min_length=1, max_length=100)
+    content: str = Field(min_length=1)
+
+
+# Make sure that when client send post request to generate new post then types of these fields are correct
+class PostCreate(PostBase):
+    user_id: int
+
+
+class PostUpdate(BaseModel):
+    title: str | None = Field(default=None, min_length=1, max_length=100)
+    content: str = Field(default=None, min_length=1)
+
+
+# Make sure that when server gives a response then types of these fields are correct
+class PostResponse(PostBase):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    user_id: int
+    date_posted: datetime
+    author: UserResponse
