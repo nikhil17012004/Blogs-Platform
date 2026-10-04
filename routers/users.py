@@ -11,6 +11,7 @@ from schemas import PostResponse, UserCreate, UserResponse, UserUpdate
 
 router = APIRouter()
 
+
 @router.post(
     "",
     response_model=UserResponse,
@@ -58,7 +59,7 @@ async def get_user(user_id: int, db: Annotated[AsyncSession, Depends(get_db)]):
 
 @router.get("/{user_id}/posts", response_model=list[PostResponse])
 async def get_user_posts(user_id: int, db: Annotated[AsyncSession, Depends(get_db)]):
-    result = await db.execute(select(models.User).where(models.User.id == user_id).order_by(models.Post.date_posted.desc()))
+    result = await db.execute(select(models.User).where(models.User.id == user_id))
     user = result.scalars().first()
     if not user:
         raise HTTPException(
@@ -68,7 +69,8 @@ async def get_user_posts(user_id: int, db: Annotated[AsyncSession, Depends(get_d
     result = await db.execute(
         select(models.Post)
         .options(selectinload(models.Post.author))
-        .where(models.Post.user_id == user_id),
+        .where(models.Post.user_id == user_id)
+        .order_by(models.Post.date_posted.desc()),
     )
     posts = result.scalars().all()
     return posts
@@ -108,9 +110,12 @@ async def update_user(
                 detail="Email already registered",
             )
 
-    update_data = user_update.model_dump(exclude_unset=True)
-    for field, value in update_data:
-        setattr(user, field, value)
+    if user_update.username is not None:
+        user.username = user_update.username
+    if user_update.email is not None:
+        user.email = user_update.email
+    if user_update.image_file is not None:
+        user.image_file = user_update.image_file
 
     await db.commit()
     await db.refresh(user)
