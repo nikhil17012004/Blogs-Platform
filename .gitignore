@@ -1,3 +1,6 @@
+.env
+
 notes.txt
 .venv
-.env
+
+*.db
