@@ -1,13 +1,18 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy import select
+from fastapi.security import OAuth2PasswordRequestForm
+from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 import models
 from database import get_db
 from schemas import PostResponse, UserCreate, UserResponse, UserUpdate
+
+from datetime import timedelta
+from auth import create_access_token, hash_password, oauth2_scheme, verify_access_token, verify_password
+from config import settings
 
 router = APIRouter()
 
