@@ -8,7 +8,7 @@ from sqlalchemy.orm import selectinload
 
 import models
 from database import get_db
-from schemas import PostResponse, UserCreate, UserResponse, UserUpdate
+from schemas import PostResponse, UserCreate, UserUpdate, UserPublic, UserPrivate, Token
 
 from datetime import timedelta
 from auth import create_access_token, hash_password, oauth2_scheme, verify_access_token, verify_password
