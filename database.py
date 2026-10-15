@@ -3,17 +3,15 @@ from sqlalchemy.orm import DeclarativeBase
 
 SQLALCHEMY_DATABASE_URL = "sqlite+aiosqlite:///./blog.db"
 
-#Connection to database
+# Connection to database
 engine = create_async_engine(
     SQLALCHEMY_DATABASE_URL,
     connect_args={"check_same_thread": False},
 )
 
-#Creates a async db session. A session is basically a transaction with a db. Each request gets its own session
+# Creates a async db session. A session is basically a transaction with a db. Each request gets its own session
 AsyncSessionLocal = async_sessionmaker(
-    engine,
-    class_=AsyncSession,
-    expire_on_commit=False
+    engine, class_=AsyncSession, expire_on_commit=False
 )
 
 
