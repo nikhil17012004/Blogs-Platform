@@ -43,7 +43,7 @@ class PostBase(BaseModel):
 
 # Make sure that when client send post request to generate new post then types of these fields are correct
 class PostCreate(PostBase):
-    user_id: int
+    pass
 
 
 class PostUpdate(BaseModel):
