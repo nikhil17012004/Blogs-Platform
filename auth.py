@@ -6,6 +6,9 @@ from pwdlib import PasswordHash
 
 from config import settings
 
+from typing import Annotated
+from fastapi import Depends, HTTPException, status
+
 password_hash = PasswordHash.recommended()
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/users/token")
