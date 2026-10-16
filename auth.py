@@ -9,6 +9,11 @@ from config import settings
 from typing import Annotated
 from fastapi import Depends, HTTPException, status
 
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+import models
+from database import get_db
+
 password_hash = PasswordHash.recommended()
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/users/token")
