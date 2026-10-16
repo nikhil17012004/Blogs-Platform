@@ -4,3 +4,6 @@ notes.txt
 .venv
 
 *.db
+
+populate_db.py
+populate_images

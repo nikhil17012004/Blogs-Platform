@@ -14,5 +14,7 @@ class Settings(BaseSettings):
 
     max_upload_size_bytes: int = 5 * 1025 * 1024
 
+    posts_per_page: int = 10
+
 
 settings = Settings()
