@@ -8,6 +8,7 @@ from sqlalchemy.orm import selectinload
 import models
 from database import get_db
 from schemas import PostCreate, PostResponse, PostUpdate
+from auth import CurrentUser
 
 router = APIRouter()
 
@@ -28,7 +29,11 @@ async def get_posts(db: Annotated[AsyncSession, Depends(get_db)]):
     response_model=PostResponse,
     status_code=status.HTTP_201_CREATED,
 )
-async def create_post(post: PostCreate, db: Annotated[AsyncSession, Depends(get_db)]):
+async def create_post(
+    post: PostCreate,
+    current_user: CurrentUser,
+    db: Annotated[AsyncSession, Depends(get_db)],
+):
     result = await db.execute(
         select(models.User).where(models.User.id == post.user_id),
     )
