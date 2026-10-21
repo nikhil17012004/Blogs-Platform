@@ -1,13 +1,9 @@
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase
-
-SQLALCHEMY_DATABASE_URL = "sqlite+aiosqlite:///./blog.db"
+from config import settings
 
 # Connection to database
-engine = create_async_engine(
-    SQLALCHEMY_DATABASE_URL,
-    connect_args={"check_same_thread": False},
-)
+engine = create_async_engine(settings.database_url)
 
 # Creates a async db session. A session is basically a transaction with a db. Each request gets its own session
 AsyncSessionLocal = async_sessionmaker(
